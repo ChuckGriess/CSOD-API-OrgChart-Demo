@@ -3,3 +3,8 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  #tree-container
+
+block scripts
+  script(src='http://d3js.org/d3.v3.min.js')
+  script(src='/javascripts/orgchart.js')
