@@ -81,7 +81,7 @@ CsodApi.prototype.getCSODHeaders = function(url, sessionToken, sessionSecret, ht
 This is a simple way to make ODATA queries on the CSOD API
 url = the base URL for the entity i.e. /services/data/Employee
 query = the odata query string for the request i.e. $select=Id,FirstName,LastName,DirectManagerId
-callback = the function to call when the API call is complete
+callback = the function to call when the API call is complete. It returns the data as a json object
 
  */
 CsodApi.prototype.getData = function(entityUrl, query, callback, error){
@@ -103,7 +103,15 @@ CsodApi.prototype.getData = function(entityUrl, query, callback, error){
             console.log('STATUS: ' + response.statusCode);
             console.log('HEADERS: ' + JSON.stringify(response.headers));
             response.setEncoding('utf8');
-            response.on('data', callback);
+
+            var responseString = '';
+
+            response.on('data', function(data){
+                responseString+=data;
+            });
+            response.on('end', function(){
+                callback(JSON.parse(responseString));
+            });
         });
         request.on('error', function(e) {
             console.log('problem with request: ' + e.message);
