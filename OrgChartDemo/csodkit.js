@@ -82,12 +82,22 @@ This is a simple way to make ODATA queries on the CSOD API
 url = the base URL for the entity i.e. /services/data/Employee
 query = the odata query string for the request i.e. $select=Id,FirstName,LastName,DirectManagerId
 callback = the function to call when the API call is complete. It returns the data as a json object
-
+isDW = determines whether the call is to the datawarehouse or not
  */
-CsodApi.prototype.getData = function(entityUrl, query, callback, error){
+CsodApi.prototype.getData = function(entity, query, callback, error, isDW){
         //I am doing a read, so I use the GET verb
         var httpVerb = "GET";
-        var path = entityUrl+query
+        var entityUrl = (isDW == true)?"/services/dw/" : "/services/data/";
+
+        //need to URL encode spaces in odata query
+        var path = entityUrl;
+        if(query != null) {
+            var find = new RegExp(" ", "g");
+            var encodedQuery = query.replace(find, "%20");
+            entityUrl += entity;
+            var path = (query != null) ? entityUrl + "?" + encodedQuery : entityUrl;
+        }
+
 
         // this is the nodejs structure for the HTTPS request
         var options = {
@@ -122,5 +132,19 @@ CsodApi.prototype.getData = function(entityUrl, query, callback, error){
         request.end();
     }
 
+/*
+This is a function to save data via the CSOD API.
+ */
+CsodApi.prototype.saveData = function(entity, query, payload, callback, error){
 
+    var httpVerb = "POST";
+    // this is the nodejs structure for the HTTPS request
+    var options = {
+        host: this.config.portal,
+        port: 443,
+        path: path,
+        method: httpVerb,
+        headers: this.getCSODHeaders(entityUrl, this.config.sessionToken, this.config.sessionSecret, httpVerb)
+    };
+}
 module.exports = CsodApi;

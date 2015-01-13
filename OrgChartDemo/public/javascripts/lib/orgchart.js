@@ -1,4 +1,4 @@
-orgchart("/javascripts/data.json", 1200, 600); //$(document).width(), $(document).height());
+
 
 function orgchart(dataUrl, chartWidth, chartHeight) {
 // Get JSON data
@@ -50,7 +50,13 @@ function orgchart(dataUrl, chartWidth, chartHeight) {
         // Call visit function to establish maxLabelLength
         visit(treeData, function (d) {
             totalNodes++;
-            maxLabelLength = Math.max(d.name.length, maxLabelLength);
+            try {
+                maxLabelLength = Math.max(d.name.length, maxLabelLength);
+            }
+            catch(e) {
+                console.log(d);
+                throw e;
+            }
 
         }, function (d) {
             return d.children && d.children.length > 0 ? d.children : null;
@@ -316,6 +322,18 @@ function orgchart(dataUrl, chartWidth, chartHeight) {
             zoomListener.scale(scale);
             zoomListener.translate([x, y]);
         }
+        function centerRootNode(source) {
+            scale = zoomListener.scale();
+            x = -source.y0;
+            y = -source.x0;
+            x = x * scale + viewerWidth / 5;
+            y = y * scale + viewerHeight / 2;
+            d3.select('g').transition()
+                .duration(duration)
+                .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+            zoomListener.scale(scale);
+            zoomListener.translate([x, y]);
+        }
 
         // Toggle children function
 
@@ -522,7 +540,7 @@ function orgchart(dataUrl, chartWidth, chartHeight) {
 
         // Layout the tree initially and center on the root node.
         update(root);
-        centerNode(root);
+        centerRootNode(root);
     });
 
 
