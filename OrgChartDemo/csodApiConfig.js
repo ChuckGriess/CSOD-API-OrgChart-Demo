@@ -8,9 +8,8 @@ var CsodConfig = function(){
      corporate system, there will need to be a mapping between your user id
      and the CSOD username if you want to user the method below
      */
-
-    this.sessionToken = "your session token here";
-    this.sessionSecret = "your session secret here";
+    this.sessionToken = "1ki43lap4igkv";
+    this.sessionSecret = "egNY4u6sJQFYeKB5yMfa4izFGhfbpZKziFoq4kK69pEtVWBicPktJHp7/beji1uLQlWLJm9Rt6TL0PCIurWQUw==";
 
 
     //put the portal you want to access here
