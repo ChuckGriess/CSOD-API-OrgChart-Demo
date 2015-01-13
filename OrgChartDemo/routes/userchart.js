@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 //include the Csod API toolkits
-var CsodApi = require('../csodkit');
-var CsodConfig = require('../csodApiConfig');
+var CsodApi = require('../csod/csodkit');
+var CsodConfig = require('../csod/csodApiConfig');
 //var utf8 = require('utf8');
 
 /*
