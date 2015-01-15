@@ -75,6 +75,7 @@ router.get('/', function(req, res) {
     var config = new CsodConfig();
     var api = new CsodApi(config);
 
+    //Use the CSOD API 
     api.getData("Employee","$select=Id,FirstName,LastName,DirectManagerId&$filter=Id gt 12", function(data){
         //console.log('BODY: ' + chunk);
         //res.json(chunk);
