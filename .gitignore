@@ -28,3 +28,4 @@ build/Release
 .lock-wscript
 /OrgChartDemo/.idea
 
+/OrgChartDemo/bin
